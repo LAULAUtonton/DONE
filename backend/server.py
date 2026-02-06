@@ -166,7 +166,7 @@ async def update_day(group_id: str, request: DayUpdateRequest):
         raise HTTPException(status_code=404, detail="Group not found")
     
     day_key = f"day{request.day}"
-    if day_key not in ["day1", "day2", "day3", "day4", "day5"]:
+    if day_key not in ["day1", "day2", "day3", "day4", "day5", "day6"]:
         raise HTTPException(status_code=400, detail="Invalid day")
     
     update_data = {
