@@ -23,26 +23,26 @@ Create an online journal project for podcast/video log students project for 3rd 
 
 ### Backend (FastAPI + MongoDB)
 - Group CRUD operations with project type support
-- 5-day data storage (day1-day5 fields)
+- **6-day data storage** (day1-day6 fields)
+- Day 3: Grammar checklist booleans + vocabulary fields
+- Day 4: Script draft + visual sketch + duration
+- Day 5: Production tools + rehearsal + final submission
+- Day 6: Reflection fields
 - Teacher authentication (password: profesor2024)
 - All error messages in English
 
 ### Frontend (React + Tailwind)
 - Landing page with "Global Issues: Making a Difference" branding
-- Group creation modal with:
-  - Group name input
-  - Project type selection (Radio Podcast / Video Log)
-  - 3 member name inputs
-- Project page with:
-  - Day navigation sidebar (5 levels)
-  - Day-specific forms with guided questions
-  - Save & Complete buttons
-  - Progress indicators
-- Teacher dashboard with:
-  - Password login
-  - Group list with progress indicators
-  - Detailed view of all responses
-  - Delete group functionality
+- Group creation with project type selection (Radio Podcast / Video Log)
+- **6-Day Project Workflow**:
+  - Day 1: Planning (topic selection)
+  - Day 2: Research (sources, learnings)
+  - Day 3: **Unit 3 Grammar Checklist** + Vocabulary (10 words min) + Structure
+  - Day 4: **Script Template** (different for podcast/vlog) + Visual Plan + Duration (3-5 min)
+  - Day 5: **Production** (tools, rehearsal, recording, submission)
+  - Day 6: **Reflection** (learning, challenges, team, improvements)
+- Teacher dashboard with all 6 days visible
+- Progress indicators (X/6)
 
 ### Design
 - Neo-brutalist style (2px black borders, hard shadows)
