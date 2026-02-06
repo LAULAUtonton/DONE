@@ -166,7 +166,7 @@ TEACHER_PASSWORD = "profesor2024"
 async def teacher_login(data: dict):
     if data.get("password") == TEACHER_PASSWORD:
         return {"success": True}
-    raise HTTPException(status_code=401, detail="Contraseña incorrecta")
+    raise HTTPException(status_code=401, detail="Incorrect password")
 
 # Include the router
 app.include_router(api_router)
