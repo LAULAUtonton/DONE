@@ -121,7 +121,7 @@ async def get_all_groups():
 async def get_group(group_id: str):
     group = await db.groups.find_one({"id": group_id}, {"_id": 0})
     if not group:
-        raise HTTPException(status_code=404, detail="Grupo no encontrado")
+        raise HTTPException(status_code=404, detail="Group not found")
     
     if isinstance(group.get('created_at'), str):
         group['created_at'] = datetime.fromisoformat(group['created_at'])
@@ -134,7 +134,7 @@ async def get_group(group_id: str):
 async def update_day(group_id: str, request: DayUpdateRequest):
     group = await db.groups.find_one({"id": group_id}, {"_id": 0})
     if not group:
-        raise HTTPException(status_code=404, detail="Grupo no encontrado")
+        raise HTTPException(status_code=404, detail="Group not found")
     
     day_key = f"day{request.day}"
     if day_key not in ["day1", "day2", "day3", "day4", "day5"]:
@@ -156,7 +156,7 @@ async def update_day(group_id: str, request: DayUpdateRequest):
 async def delete_group(group_id: str):
     result = await db.groups.delete_one({"id": group_id})
     if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Grupo no encontrado")
+        raise HTTPException(status_code=404, detail="Group not found")
     return {"message": "Grupo eliminado"}
 
 # Teacher password check (simple)
