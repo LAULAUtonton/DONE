@@ -62,6 +62,7 @@ class GroupProject(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     group_name: str
     members: List[str] = []
+    project_type: str = "podcast"  # "podcast" or "vlog"
     day1: Day1Data = Field(default_factory=Day1Data)
     day2: Day2Data = Field(default_factory=Day2Data)
     day3: Day3Data = Field(default_factory=Day3Data)
@@ -73,6 +74,7 @@ class GroupProject(BaseModel):
 class GroupCreate(BaseModel):
     group_name: str
     members: List[str]
+    project_type: str = "podcast"
 
 class DayUpdateRequest(BaseModel):
     day: int
