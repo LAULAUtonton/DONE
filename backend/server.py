@@ -44,14 +44,13 @@ class Day3Data(BaseModel):
     introduction: str = ""
     development: str = ""
     conclusion: str = ""
-    # Grammar Checklist (Unit 3)
-    grammar_present_perfect: bool = False
-    grammar_comparatives: bool = False
-    grammar_connectors: bool = False
-    grammar_passive_voice: bool = False
+    # Grammar Checklist (Unit 3 - Actual content)
+    grammar_second_conditional: bool = False
+    grammar_indefinite_pronouns: bool = False
+    grammar_compound_nouns: bool = False
     # Vocabulary
     key_vocabulary: str = ""
-    vocabulary_definitions: str = ""
+    vocabulary_used_in_script: str = ""
     # Language Style
     language_style: str = ""
     completed: bool = False
