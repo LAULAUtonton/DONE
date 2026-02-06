@@ -92,11 +92,12 @@ async def create_group(input: GroupCreate):
     # Check if group name already exists
     existing = await db.groups.find_one({"group_name": input.group_name}, {"_id": 0})
     if existing:
-        raise HTTPException(status_code=400, detail="El nombre del grupo ya existe")
+        raise HTTPException(status_code=400, detail="Group name already exists")
     
     project = GroupProject(
         group_name=input.group_name,
-        members=input.members
+        members=input.members,
+        project_type=input.project_type
     )
     
     doc = project.model_dump()
