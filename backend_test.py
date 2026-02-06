@@ -134,19 +134,18 @@ class PodcastJournalAPITester:
         }
         success2 = self.run_test("Update Day 2", "PUT", f"groups/{self.created_group_id}/day", 200, day2_data)
         
-        # Test Day 3 update (NEW - Grammar checklist and vocabulary)
+        # Test Day 3 update (Unit 3 Grammar - Second Conditional, Indefinite Pronouns, Compound Nouns)
         day3_data = {
             "day": 3,
             "data": {
                 "introduction": "Hook your audience with this intro",
                 "development": "Main content development",
                 "conclusion": "Call to action conclusion",
-                "grammar_present_perfect": True,
-                "grammar_comparatives": True,
-                "grammar_connectors": False,
-                "grammar_passive_voice": True,
-                "key_vocabulary": "climate, environment, sustainability, pollution, renewable",
-                "vocabulary_definitions": "Climate: weather conditions, Environment: surroundings",
+                "grammar_second_conditional": True,
+                "grammar_indefinite_pronouns": True,
+                "grammar_compound_nouns": False,
+                "key_vocabulary": "carbon footprint, climate change, greenhouse gases, fossil fuels, solar energy",
+                "vocabulary_used_in_script": "We will use carbon footprint and climate change in our script",
                 "language_style": "Formal and persuasive",
                 "completed": False
             }
