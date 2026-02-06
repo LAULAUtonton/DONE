@@ -143,7 +143,7 @@ class PodcastJournalAPITester:
             return False
         
         invalid_day_data = {
-            "day": 6,  # Invalid day
+            "day": 7,  # Invalid day (now 6 days are valid)
             "data": {"test": "data"}
         }
         return self.run_test("Update Invalid Day", "PUT", f"groups/{self.created_group_id}/day", 400, invalid_day_data)
