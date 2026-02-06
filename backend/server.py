@@ -157,7 +157,7 @@ async def delete_group(group_id: str):
     result = await db.groups.delete_one({"id": group_id})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Group not found")
-    return {"message": "Grupo eliminado"}
+    return {"message": "Group deleted"}
 
 # Teacher password check (simple)
 TEACHER_PASSWORD = "profesor2024"
