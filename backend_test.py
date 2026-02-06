@@ -217,6 +217,8 @@ def main():
     tests = [
         tester.test_root_endpoint,
         tester.test_create_group,
+        tester.test_create_vlog_group,
+        tester.test_default_project_type,
         tester.test_create_duplicate_group,
         tester.test_get_all_groups,
         tester.test_get_specific_group,
