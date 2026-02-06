@@ -62,12 +62,18 @@ class PodcastJournalAPITester:
         """Test creating a new group"""
         test_data = {
             "group_name": f"Test Group {datetime.now().strftime('%H%M%S')}",
-            "members": ["Student 1", "Student 2", "Student 3"]
+            "members": ["Student 1", "Student 2", "Student 3"],
+            "project_type": "podcast"
         }
         success, response = self.run_test("Create Group", "POST", "groups", 200, test_data)
         if success and 'id' in response:
             self.created_group_id = response['id']
             print(f"   Created group ID: {self.created_group_id}")
+            # Verify project_type is set correctly
+            if response.get('project_type') == 'podcast':
+                print(f"   ✅ Project type correctly set to: {response['project_type']}")
+            else:
+                print(f"   ❌ Project type incorrect: {response.get('project_type')}")
         return success
 
     def test_create_duplicate_group(self):
