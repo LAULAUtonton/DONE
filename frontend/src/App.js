@@ -500,10 +500,42 @@ const ProjectPage = () => {
                   </div>
 
                   <div className="bg-green-50 border-2 border-black p-4 mb-6">
-                    <h3 className="font-bold text-sm uppercase mb-2">🛠️ FREE TOOLS:</h3>
-                    <div className="grid md:grid-cols-2 gap-4 text-sm">
-                      <div><p className="font-bold">📻 Audio:</p><p>Phone voice recorder, Audacity</p></div>
-                      <div><p className="font-bold">🎬 Video:</p><p>Phone camera, CapCut, Canva</p></div>
+                    <h3 className="font-bold text-sm uppercase mb-2">🎤🎥 FREE TOOLS:</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="font-bold text-sm mb-2">📻 PODCAST (Audio):</p>
+                        <div className="space-y-2">
+                          <a href="https://vocaroo.com" target="_blank" rel="noopener noreferrer" className="block bg-white border border-black p-2 hover:bg-yellow-50 transition-colors">
+                            <span className="font-bold">Vocaroo</span>
+                            <span className="text-xs text-blue-600 ml-2">vocaroo.com →</span>
+                          </a>
+                          <a href="https://online-voice-recorder.com" target="_blank" rel="noopener noreferrer" className="block bg-white border border-black p-2 hover:bg-yellow-50 transition-colors">
+                            <span className="font-bold">Online Voice Recorder</span>
+                            <span className="text-xs text-blue-600 ml-2">online-voice-recorder.com →</span>
+                          </a>
+                          <a href="https://podcasters.spotify.com" target="_blank" rel="noopener noreferrer" className="block bg-white border border-black p-2 hover:bg-yellow-50 transition-colors">
+                            <span className="font-bold">Spotify for Podcasters</span>
+                            <span className="text-xs text-blue-600 ml-2">podcasters.spotify.com →</span>
+                          </a>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="font-bold text-sm mb-2">🎬 VIDEO LOG:</p>
+                        <div className="space-y-2">
+                          <a href="https://info.flip.com" target="_blank" rel="noopener noreferrer" className="block bg-white border border-black p-2 hover:bg-yellow-50 transition-colors">
+                            <span className="font-bold">Flip</span>
+                            <span className="text-xs text-blue-600 ml-2">info.flip.com →</span>
+                          </a>
+                          <a href="https://www.clipchamp.com" target="_blank" rel="noopener noreferrer" className="block bg-white border border-black p-2 hover:bg-yellow-50 transition-colors">
+                            <span className="font-bold">Clipchamp</span>
+                            <span className="text-xs text-blue-600 ml-2">clipchamp.com →</span>
+                          </a>
+                          <div className="bg-white border border-black p-2">
+                            <span className="font-bold">📱 Device Camera</span>
+                            <span className="text-xs text-gray-600 ml-2">Use your phone/tablet</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
