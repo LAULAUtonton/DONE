@@ -447,19 +447,20 @@ const ProjectPage = () => {
                 </div>
               )}
 
-              {/* DAY 4 - Script */}
+              {/* DAY 4 - Script DRAFT */}
               {activeDay === 4 && (
                 <div data-testid="day-4-form">
-                  <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><PenTool className="w-6 h-6 text-[#F59E0B]" /> Day 4: Script</h2>
+                  <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><PenTool className="w-6 h-6 text-[#F59E0B]" /> Day 4: DRAFT Script</h2>
                   
                   {/* TURN IN BOX */}
                   <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
                     <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 4, YOU MUST:</h3>
                     <ul className="text-sm space-y-1">
-                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day4?.draft_script ? 'bg-green-400' : 'bg-white'}`}>{group.day4?.draft_script && '✓'}</span> Write your <strong>complete script</strong> (all 3 students + ending)</li>
-                      <li className="flex items-center gap-2"><span className="w-5 h-5 border-2 border-black flex items-center justify-center bg-yellow-200">!</span> Script must have <strong>6 Second Conditional</strong> sentences</li>
-                      <li className="flex items-center gap-2"><span className="w-5 h-5 border-2 border-black flex items-center justify-center bg-yellow-200">!</span> Script must have <strong>4+ Indefinite Pronouns</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day4?.draft_script ? 'bg-green-400' : 'bg-white'}`}>{group.day4?.draft_script && '✓'}</span> Write your <strong>DRAFT script</strong> (all 3 students + ending)</li>
                     </ul>
+                    <div className="mt-3 bg-yellow-200 border-2 border-yellow-600 p-2">
+                      <p className="text-sm font-bold">⚠️ IMPORTANT: This is your DRAFT. Your teacher will correct it. You will write the FINAL version on Day 5.</p>
+                    </div>
                   </div>
                   
                   {/* STRUCTURE */}
