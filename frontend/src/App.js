@@ -513,6 +513,15 @@ const ProjectPage = () => {
                 <div data-testid="day-5-form">
                   <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><Play className="w-6 h-6 text-[#10B981]" /> Day 5: Production</h2>
                   
+                  {/* TURN IN BOX */}
+                  <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 5, YOU MUST:</h3>
+                    <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day5?.rehearsal_notes ? 'bg-green-400' : 'bg-white'}`}>{group.day5?.rehearsal_notes && '✓'}</span> Write your <strong>rehearsal notes</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day5?.media_link ? 'bg-green-400' : 'bg-white'}`}>{group.day5?.media_link && '✓'}</span> <strong>Upload your {isPodcast ? 'podcast' : 'video'}</strong> and paste the link</li>
+                    </ul>
+                  </div>
+                  
                   {/* RUBRIC */}
                   <div className="bg-blue-50 border-2 border-black p-4 mb-6">
                     <h3 className="font-bold text-sm uppercase mb-2">📋 ASSESSMENT RUBRIC - How you will be graded:</h3>
