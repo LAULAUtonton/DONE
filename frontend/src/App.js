@@ -447,6 +447,16 @@ const ProjectPage = () => {
                 <div data-testid="day-4-form">
                   <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><PenTool className="w-6 h-6 text-[#F59E0B]" /> Day 4: Script</h2>
                   
+                  {/* TURN IN BOX */}
+                  <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 4, YOU MUST:</h3>
+                    <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day4?.draft_script ? 'bg-green-400' : 'bg-white'}`}>{group.day4?.draft_script && '✓'}</span> Write your <strong>complete script</strong> (all 3 students + ending)</li>
+                      <li className="flex items-center gap-2"><span className="w-5 h-5 border-2 border-black flex items-center justify-center bg-yellow-200">!</span> Script must have <strong>6 Second Conditional</strong> sentences</li>
+                      <li className="flex items-center gap-2"><span className="w-5 h-5 border-2 border-black flex items-center justify-center bg-yellow-200">!</span> Script must have <strong>4+ Indefinite Pronouns</strong></li>
+                    </ul>
+                  </div>
+                  
                   {/* STRUCTURE */}
                   <div className="bg-purple-100 border-4 border-purple-500 p-4 mb-6">
                     <h3 className="font-bold text-lg uppercase mb-3">{isPodcast ? '🎙️ PODCAST' : '🎬 VIDEO LOG'} STRUCTURE</h3>
