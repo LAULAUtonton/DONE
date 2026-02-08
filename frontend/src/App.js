@@ -292,10 +292,11 @@ const ProjectPage = () => {
                   
                   {/* TURN IN BOX */}
                   <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
-                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 1, YOU MUST:</h3>
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 1, YOU MUST ANSWER:</h3>
                     <ul className="text-sm space-y-1">
-                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.topic && '✓'}</span> Write your <strong>topic</strong></li>
-                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.why_this_topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.why_this_topic && '✓'}</span> Explain the <strong>problem</strong> (what + who)</li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.topic && '✓'}</span> <strong>Question 1:</strong> What is your topic?</li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.why_this_topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.why_this_topic && '✓'}</span> <strong>Question 2:</strong> What is the problem and who does it affect?</li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.what_to_communicate ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.what_to_communicate && '✓'}</span> <strong>Question 3:</strong> Why is this important to you?</li>
                     </ul>
                   </div>
                   
@@ -310,12 +311,16 @@ const ProjectPage = () => {
 
                   <div className="space-y-6">
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🎯 Your Topic <span className="text-red-500">*</span></label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">❓ QUESTION 1: What is your topic? <span className="text-red-500">*</span></label>
                       <input type="text" value={group.day1?.topic || ""} onChange={(e) => updateDay(1, 'topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" placeholder="e.g., poverty, inequality, pollution..." data-testid="day1-topic" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📍 What is the problem? Who does it affect? <span className="text-red-500">*</span></label>
-                      <textarea value={group.day1?.why_this_topic || ""} onChange={(e) => updateDay(1, 'why_this_topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: Poverty affects many people around the world. Someone needs help every day." data-testid="day1-why" />
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">❓ QUESTION 2: What is the problem and who does it affect? <span className="text-red-500">*</span></label>
+                      <textarea value={group.day1?.why_this_topic || ""} onChange={(e) => updateDay(1, 'why_this_topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: Poverty affects many people around the world. It is a problem in many countries..." data-testid="day1-why" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">❓ QUESTION 3: Why is this important to you? <span className="text-red-500">*</span></label>
+                      <textarea value={group.day1?.what_to_communicate || ""} onChange={(e) => updateDay(1, 'what_to_communicate', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: This is important because we want to help people and make a difference..." data-testid="day1-important" />
                     </div>
                   </div>
                 </div>
