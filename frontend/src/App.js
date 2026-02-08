@@ -290,6 +290,15 @@ const ProjectPage = () => {
                 <div data-testid="day-1-form">
                   <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><Target className="w-6 h-6 text-[#8B5CF6]" /> Day 1: Planning</h2>
                   
+                  {/* TURN IN BOX */}
+                  <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 1, YOU MUST:</h3>
+                    <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.topic && '✓'}</span> Write your <strong>topic</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.why_this_topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.why_this_topic && '✓'}</span> Explain the <strong>problem</strong> (what + who)</li>
+                    </ul>
+                  </div>
+                  
                   <div className="bg-blue-50 border-2 border-black p-4 mb-6">
                     <h3 className="font-bold text-sm mb-2">🌍 Choose ONE Global Issue:</h3>
                     <div className="flex flex-wrap gap-2">
@@ -301,11 +310,11 @@ const ProjectPage = () => {
 
                   <div className="space-y-6">
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🎯 Your Topic</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🎯 Your Topic <span className="text-red-500">*</span></label>
                       <input type="text" value={group.day1?.topic || ""} onChange={(e) => updateDay(1, 'topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" placeholder="e.g., poverty, inequality, pollution..." data-testid="day1-topic" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📍 What is the problem? Who does it affect?</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📍 What is the problem? Who does it affect? <span className="text-red-500">*</span></label>
                       <textarea value={group.day1?.why_this_topic || ""} onChange={(e) => updateDay(1, 'why_this_topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: Poverty affects many people around the world. Someone needs help every day." data-testid="day1-why" />
                     </div>
                   </div>
