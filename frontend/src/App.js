@@ -608,21 +608,33 @@ const ProjectPage = () => {
               {activeDay === 6 && (
                 <div data-testid="day-6-form">
                   <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><RefreshCw className="w-6 h-6 text-[#A3E635]" /> Day 6: Reflection</h2>
+                  
+                  {/* TURN IN BOX */}
+                  <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 6, YOU MUST:</h3>
+                    <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day6?.what_learned ? 'bg-green-400' : 'bg-white'}`}>{group.day6?.what_learned && '✓'}</span> Answer: <strong>What did you learn?</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day6?.challenges_faced ? 'bg-green-400' : 'bg-white'}`}>{group.day6?.challenges_faced && '✓'}</span> Answer: <strong>What was difficult?</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day6?.team_collaboration ? 'bg-green-400' : 'bg-white'}`}>{group.day6?.team_collaboration && '✓'}</span> Answer: <strong>How did you work as a team?</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day6?.overall_experience ? 'bg-green-400' : 'bg-white'}`}>{group.day6?.overall_experience && '✓'}</span> <strong>Rate your experience</strong> (1-10)</li>
+                    </ul>
+                  </div>
+                  
                   <div className="space-y-6">
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📚 What did you learn?</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📚 What did you learn? <span className="text-red-500">*</span></label>
                       <textarea value={group.day6?.what_learned || ""} onChange={(e) => updateDay(6, 'what_learned', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[80px]" placeholder="About the topic? About English?" data-testid="day6-learned" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">⚡ What was difficult?</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">⚡ What was difficult? <span className="text-red-500">*</span></label>
                       <textarea value={group.day6?.challenges_faced || ""} onChange={(e) => updateDay(6, 'challenges_faced', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[80px]" placeholder="What challenges did you face?" data-testid="day6-challenges" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">👥 How did you work as a team?</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">👥 How did you work as a team? <span className="text-red-500">*</span></label>
                       <textarea value={group.day6?.team_collaboration || ""} onChange={(e) => updateDay(6, 'team_collaboration', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[80px]" placeholder="Who did what?" data-testid="day6-team" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">⭐ Rate your experience (1-10)</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">⭐ Rate your experience (1-10) <span className="text-red-500">*</span></label>
                       <textarea value={group.day6?.overall_experience || ""} onChange={(e) => updateDay(6, 'overall_experience', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[80px]" placeholder="1-10 and why..." data-testid="day6-experience" />
                     </div>
                   </div>
