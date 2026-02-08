@@ -326,17 +326,27 @@ const ProjectPage = () => {
                 <div data-testid="day-2-form">
                   <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><Search className="w-6 h-6 text-[#F472B6]" /> Day 2: Research</h2>
                   
+                  {/* TURN IN BOX */}
+                  <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 2, YOU MUST:</h3>
+                    <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day2?.sources ? 'bg-green-400' : 'bg-white'}`}>{group.day2?.sources && '✓'}</span> List your <strong>sources</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day2?.learnings ? 'bg-green-400' : 'bg-white'}`}>{group.day2?.learnings && '✓'}</span> Write <strong>3-4 facts</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day2?.target_audience ? 'bg-green-400' : 'bg-white'}`}>{group.day2?.target_audience && '✓'}</span> Write <strong>3 solutions</strong></li>
+                    </ul>
+                  </div>
+                  
                   <div className="space-y-6">
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🔍 Sources (where did you find information?)</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🔍 Sources (where did you find information?) <span className="text-red-500">*</span></label>
                       <textarea value={group.day2?.sources || ""} onChange={(e) => updateDay(2, 'sources', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[80px]" placeholder="List websites, videos, articles..." data-testid="day2-sources" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📊 Facts about your topic (3-4 simple facts)</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">📊 Facts about your topic (3-4 simple facts) <span className="text-red-500">*</span></label>
                       <textarea value={group.day2?.learnings || ""} onChange={(e) => updateDay(2, 'learnings', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[120px]" placeholder="Fact 1:&#10;Fact 2:&#10;Fact 3:" data-testid="day2-learnings" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">💡 Solutions (at least 3)</label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">💡 Solutions (at least 3) <span className="text-red-500">*</span></label>
                       <textarea value={group.day2?.target_audience || ""} onChange={(e) => updateDay(2, 'target_audience', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Solution 1:&#10;Solution 2:&#10;Solution 3:" data-testid="day2-solutions" />
                     </div>
                   </div>
