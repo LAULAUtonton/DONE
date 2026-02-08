@@ -517,43 +517,36 @@ const ProjectPage = () => {
               {/* DAY 5 - Production */}
               {activeDay === 5 && (
                 <div data-testid="day-5-form">
-                  <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><Play className="w-6 h-6 text-[#10B981]" /> Day 5: Production</h2>
+                  <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><Play className="w-6 h-6 text-[#10B981]" /> Day 5: Final Script, Rehearsal & Recording</h2>
                   
                   {/* TURN IN BOX */}
                   <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
                     <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 5, YOU MUST:</h3>
                     <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day5?.final_script ? 'bg-green-400' : 'bg-white'}`}>{group.day5?.final_script && '✓'}</span> Write your <strong>FINAL corrected script</strong> (after teacher feedback)</li>
                       <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day5?.rehearsal_notes ? 'bg-green-400' : 'bg-white'}`}>{group.day5?.rehearsal_notes && '✓'}</span> Write your <strong>rehearsal notes</strong></li>
                       <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day5?.media_link ? 'bg-green-400' : 'bg-white'}`}>{group.day5?.media_link && '✓'}</span> <strong>Upload your {isPodcast ? 'podcast' : 'video'}</strong> and paste the link</li>
                     </ul>
                   </div>
-                  
-                  {/* RUBRIC */}
-                  <div className="bg-blue-50 border-2 border-black p-4 mb-6">
-                    <h3 className="font-bold text-sm uppercase mb-2">📋 ASSESSMENT RUBRIC - How you will be graded:</h3>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-xs border-collapse">
-                        <thead>
-                          <tr className="bg-black text-white">
-                            <th className="border border-black p-2 text-left">Criteria</th>
-                            <th className="border border-black p-2">Excellent (4)</th>
-                            <th className="border border-black p-2">Good (3)</th>
-                            <th className="border border-black p-2">Basic (2)</th>
-                            <th className="border border-black p-2">Needs Work (1)</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td className="border border-black p-2 font-bold">Structure</td><td className="border border-black p-2 bg-green-100">All parts included</td><td className="border border-black p-2">Parts included</td><td className="border border-black p-2">1 part missing</td><td className="border border-black p-2">Poor structure</td></tr>
-                          <tr><td className="border border-black p-2 font-bold">Second Conditional</td><td className="border border-black p-2 bg-green-100">6 correct sentences</td><td className="border border-black p-2">4-5 correct</td><td className="border border-black p-2">1-3 with errors</td><td className="border border-black p-2">Not used</td></tr>
-                          <tr><td className="border border-black p-2 font-bold">Indefinite Pronouns</td><td className="border border-black p-2 bg-green-100">4+ used correctly</td><td className="border border-black p-2">2-3 used</td><td className="border border-black p-2">1 used</td><td className="border border-black p-2">Not used</td></tr>
-                          <tr><td className="border border-black p-2 font-bold">Vocabulary (Unit 3)</td><td className="border border-black p-2 bg-green-100">Accurate and varied</td><td className="border border-black p-2">Mostly correct</td><td className="border border-black p-2">Limited</td><td className="border border-black p-2">Very limited</td></tr>
-                          <tr><td className="border border-black p-2 font-bold">Pronunciation</td><td className="border border-black p-2 bg-green-100">Confident, fluent</td><td className="border border-black p-2">Mostly clear</td><td className="border border-black p-2">Some difficulty</td><td className="border border-black p-2">Hard to understand</td></tr>
-                          <tr><td className="border border-black p-2 font-bold">Participation</td><td className="border border-black p-2 bg-green-100">All students speak equally</td><td className="border border-black p-2">Most speak</td><td className="border border-black p-2">Unequal</td><td className="border border-black p-2">1 student dominates</td></tr>
-                        </tbody>
-                      </table>
+
+                  {/* FINAL SCRIPT SECTION */}
+                  <div className="bg-green-100 border-4 border-green-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📝 STEP 1: FINAL CORRECTED SCRIPT</h3>
+                    <p className="text-sm mb-3">Copy your draft from Day 4, apply teacher corrections, and write the final version here:</p>
+                    <textarea value={group.day5?.final_script || ""} onChange={(e) => updateDay(5, 'final_script', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[250px] font-mono text-sm" placeholder="Paste your corrected FINAL script here...&#10;&#10;🎤 STUDENT 1:&#10;...&#10;&#10;🎤 STUDENT 2:&#10;...&#10;&#10;🎤 STUDENT 3:&#10;...&#10;&#10;🎤 ALL:&#10;..." data-testid="day5-final-script" />
+                  </div>
+
+                  {/* REHEARSAL SECTION */}
+                  <div className="bg-blue-100 border-4 border-blue-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">🎭 STEP 2: REHEARSAL</h3>
+                    <p className="text-sm mb-3">Practice your script at least 3 times before recording!</p>
+                    <div>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">Rehearsal Notes <span className="text-red-500">*</span></label>
+                      <textarea value={group.day5?.rehearsal_notes || ""} onChange={(e) => updateDay(5, 'rehearsal_notes', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="How many times did you practice?&#10;What did you improve?&#10;What was difficult to pronounce?" data-testid="day5-rehearsal" />
                     </div>
                   </div>
 
+                  {/* TOOLS */}
                   <div className="bg-green-50 border-2 border-black p-4 mb-6">
                     <h3 className="font-bold text-sm uppercase mb-2">🎤🎥 FREE TOOLS:</h3>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -594,17 +587,36 @@ const ProjectPage = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-6">
-                    <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🎭 Rehearsal Notes</label>
-                      <textarea value={group.day5?.rehearsal_notes || ""} onChange={(e) => updateDay(5, 'rehearsal_notes', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[80px]" placeholder="How many times did you practice?" data-testid="day5-rehearsal" />
-                    </div>
-                    <div className="bg-[#A3E635] border-2 border-black p-4">
-                      <h3 className="font-bold text-sm uppercase mb-2">🎉 SUBMIT YOUR {isPodcast ? 'PODCAST' : 'VIDEO LOG'}!</h3>
-                    </div>
-                    <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🔗 Link (YouTube, Google Drive...)</label>
-                      <input type="url" value={group.day5?.media_link || ""} onChange={(e) => updateDay(5, 'media_link', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" placeholder="https://..." data-testid="day5-link" />
+                  {/* UPLOAD SECTION */}
+                  <div className="bg-[#A3E635] border-4 border-black p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">🎉 STEP 3: RECORD & UPLOAD</h3>
+                    <p className="text-sm mb-3">Record your {isPodcast ? 'podcast' : 'video'}, upload it, and paste the link below:</p>
+                    <input type="url" value={group.day5?.media_link || ""} onChange={(e) => updateDay(5, 'media_link', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" placeholder="https://vocaroo.com/... or https://youtube.com/... or https://drive.google.com/..." data-testid="day5-link" />
+                  </div>
+
+                  {/* RUBRIC */}
+                  <div className="bg-blue-50 border-2 border-black p-4 mb-6">
+                    <h3 className="font-bold text-sm uppercase mb-2">📋 ASSESSMENT RUBRIC - HOW YOU WILL BE GRADED:</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-black text-white">
+                            <th className="border border-black p-2 text-left">Criteria</th>
+                            <th className="border border-black p-2">Excellent (4)</th>
+                            <th className="border border-black p-2">Good (3)</th>
+                            <th className="border border-black p-2">Basic (2)</th>
+                            <th className="border border-black p-2">Needs Work (1)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td className="border border-black p-2 font-bold">Structure</td><td className="border border-black p-2 bg-green-100">All parts included</td><td className="border border-black p-2">Parts included</td><td className="border border-black p-2">1 part missing</td><td className="border border-black p-2">Poor structure</td></tr>
+                          <tr><td className="border border-black p-2 font-bold">Second Conditional</td><td className="border border-black p-2 bg-green-100">6 correct sentences</td><td className="border border-black p-2">4-5 correct</td><td className="border border-black p-2">1-3 with errors</td><td className="border border-black p-2">Not used</td></tr>
+                          <tr><td className="border border-black p-2 font-bold">Indefinite Pronouns</td><td className="border border-black p-2 bg-green-100">4+ used correctly</td><td className="border border-black p-2">2-3 used</td><td className="border border-black p-2">1 used</td><td className="border border-black p-2">Not used</td></tr>
+                          <tr><td className="border border-black p-2 font-bold">Vocabulary (Unit 3)</td><td className="border border-black p-2 bg-green-100">Accurate and varied</td><td className="border border-black p-2">Mostly correct</td><td className="border border-black p-2">Limited</td><td className="border border-black p-2">Very limited</td></tr>
+                          <tr><td className="border border-black p-2 font-bold">Pronunciation</td><td className="border border-black p-2 bg-green-100">Confident, fluent</td><td className="border border-black p-2">Mostly clear</td><td className="border border-black p-2">Some difficulty</td><td className="border border-black p-2">Hard to understand</td></tr>
+                          <tr><td className="border border-black p-2 font-bold">Participation</td><td className="border border-black p-2 bg-green-100">All students speak equally</td><td className="border border-black p-2">Most speak</td><td className="border border-black p-2">Unequal</td><td className="border border-black p-2">1 student dominates</td></tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
