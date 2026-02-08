@@ -65,12 +65,13 @@ class Day4Data(BaseModel):
     completed: bool = False
 
 class Day5Data(BaseModel):
+    # Final corrected script
+    final_script: str = ""
     # Production
     rehearsal_notes: str = ""
     production_tools: str = ""
     recording_date: str = ""
     # Final submission
-    final_script: str = ""
     media_link: str = ""
     completed: bool = False
 
