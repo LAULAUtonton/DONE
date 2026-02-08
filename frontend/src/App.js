@@ -358,6 +358,17 @@ const ProjectPage = () => {
                 <div data-testid="day-3-form">
                   <h2 className="text-2xl font-bold uppercase mb-6 flex items-center gap-2"><BookOpen className="w-6 h-6 text-[#06B6D4]" /> Day 3: Language</h2>
                   
+                  {/* TURN IN BOX */}
+                  <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 3, YOU MUST:</h3>
+                    <ul className="text-sm space-y-1">
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day3?.introduction ? 'bg-green-400' : 'bg-white'}`}>{group.day3?.introduction && '✓'}</span> Write <strong>6 Second Conditional sentences</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day3?.development ? 'bg-green-400' : 'bg-white'}`}>{group.day3?.development && '✓'}</span> Write sentences with <strong>4+ Indefinite Pronouns</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day3?.grammar_second_conditional ? 'bg-green-400' : 'bg-white'}`}>{group.day3?.grammar_second_conditional && '✓'}</span> Check the <strong>conditionals checkbox</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day3?.grammar_indefinite_pronouns ? 'bg-green-400' : 'bg-white'}`}>{group.day3?.grammar_indefinite_pronouns && '✓'}</span> Check the <strong>pronouns checkbox</strong></li>
+                    </ul>
+                  </div>
+                  
                   {/* GRAMMAR REQUIREMENTS - CLEAR BOX */}
                   <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
                     <h3 className="font-bold text-lg uppercase mb-3 text-red-700">⚠️ YOU MUST USE:</h3>
