@@ -219,20 +219,27 @@ const ProjectPage = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
- useEffect(() => {
+const fetchGroup = useCallback(async () => {
+  try {
+    const res = await axios.get(`${API}/groups/${groupId}`);
+    setGroup(res.data);
+
+    const days = [
+      res.data.day1, res.data.day2, res.data.day3,
+      res.data.day4, res.data.day5, res.data.day6
+    ];
+
+    const firstIncomplete = days.findIndex(d => !d?.completed);
+    setActiveDay(firstIncomplete === -1 ? 6 : firstIncomplete + 1);
+
+  } catch (e) {
+    navigate('/');
+  }
+}, [API, groupId, navigate]);
+  
+useEffect(() => {
   fetchGroup();
 }, [fetchGroup]);
-
-
-  const fetchGroup = async () => {
-    try {
-      const res = await axios.get(`${API}/groups/${groupId}`);
-      setGroup(res.data);
-      const days = [res.data.day1, res.data.day2, res.data.day3, res.data.day4, res.data.day5, res.data.day6];
-      const firstIncomplete = days.findIndex(d => !d?.completed);
-      setActiveDay(firstIncomplete === -1 ? 6 : firstIncomplete + 1);
-    } catch (e) { navigate('/'); }
-  };
 
   const updateDay = (day, field, value) => {
     setGroup(prev => ({ ...prev, [`day${day}`]: { ...prev[`day${day}`], [field]: value } }));
