@@ -225,7 +225,7 @@ async def delete_group(group_id: str):
     return {"message": "Group deleted"}
 
 # Teacher password check (simple)
-TEACHER_PASSWORD = "profesor2024"
+TEACHER_PASSWORD = os.environ.get('TEACHER_PASSWORD', 'profesor2024')
 
 @api_router.post("/teacher/login")
 async def teacher_login(data: dict):
