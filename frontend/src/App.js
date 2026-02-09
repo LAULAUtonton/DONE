@@ -198,7 +198,10 @@ const ProjectPage = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  useEffect(() => { fetchGroup(); }, [groupId]);
+ useEffect(() => {
+  fetchGroup();
+}, [fetchGroup]);
+
 
   const fetchGroup = async () => {
     try {
