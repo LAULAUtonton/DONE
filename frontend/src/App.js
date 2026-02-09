@@ -675,6 +675,61 @@ const ProjectPage = () => {
                 </div>
               )}
 
+              {/* STUDENT GRADE VIEW - Show if graded */}
+              {group.grading && Object.values(group.grading).some(v => v > 0) && (
+                <div className="mt-6 bg-gradient-to-r from-purple-100 to-blue-100 border-4 border-purple-500 p-6" data-testid="student-grade-view">
+                  <h3 className="text-xl font-bold uppercase mb-4 flex items-center gap-2">📊 Your Grade</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <table className="w-full text-sm border-collapse">
+                        <thead>
+                          <tr className="bg-purple-500 text-white">
+                            <th className="border border-purple-600 p-2 text-left">Criteria</th>
+                            <th className="border border-purple-600 p-2 text-center w-16">Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            { key: 'structure', label: 'Structure' },
+                            { key: 'second_conditional', label: 'Second Conditional' },
+                            { key: 'indefinite_pronouns', label: 'Indefinite Pronouns' },
+                            { key: 'vocabulary', label: 'Vocabulary (Unit 3)' },
+                            { key: 'pronunciation', label: 'Pronunciation' },
+                            { key: 'participation', label: 'Participation' },
+                          ].map(row => (
+                            <tr key={row.key} className="bg-white">
+                              <td className="border border-gray-300 p-2">{row.label}</td>
+                              <td className="border border-gray-300 p-2 text-center font-bold">
+                                <span className={`inline-block w-8 h-8 leading-8 rounded ${group.grading[row.key] >= 3 ? 'bg-green-400' : group.grading[row.key] >= 2 ? 'bg-yellow-300' : 'bg-red-300'}`}>
+                                  {group.grading[row.key] || 0}
+                                </span>/4
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="flex flex-col justify-between">
+                      <div className="bg-[#A3E635] border-2 border-black p-4 text-center mb-4">
+                        <p className="text-sm font-bold uppercase">Total Score</p>
+                        <p className="text-4xl font-bold">
+                          {['structure', 'second_conditional', 'indefinite_pronouns', 'vocabulary', 'pronunciation', 'participation'].reduce((sum, k) => sum + (group.grading[k] || 0), 0)} / 24
+                        </p>
+                        <p className="text-lg font-bold">
+                          {Math.round((['structure', 'second_conditional', 'indefinite_pronouns', 'vocabulary', 'pronunciation', 'participation'].reduce((sum, k) => sum + (group.grading[k] || 0), 0) / 24) * 100)}%
+                        </p>
+                      </div>
+                      {group.grading.comments && (
+                        <div className="bg-white border-2 border-black p-3">
+                          <p className="text-sm font-bold uppercase mb-1">💬 Teacher Comments:</p>
+                          <p className="text-sm italic">{group.grading.comments}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Actions */}
               <div className="flex flex-col md:flex-row gap-3 mt-8 pt-6 border-t-2 border-black">
                 <button onClick={() => saveDay(activeDay)} disabled={saving} className="flex-1 bg-white text-black border-2 border-black hover:bg-gray-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold uppercase py-3 flex items-center justify-center gap-2 disabled:opacity-50" data-testid="save-btn">
