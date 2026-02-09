@@ -196,6 +196,27 @@ async def update_day(group_id: str, request: DayUpdateRequest):
     
     return {"message": "Updated successfully", "day": request.day}
 
+class GradingUpdateRequest(BaseModel):
+    grading: dict
+
+@api_router.put("/groups/{group_id}/grading")
+async def update_grading(group_id: str, request: GradingUpdateRequest):
+    group = await db.groups.find_one({"id": group_id}, {"_id": 0})
+    if not group:
+        raise HTTPException(status_code=404, detail="Group not found")
+    
+    update_data = {
+        "grading": request.grading,
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.groups.update_one(
+        {"id": group_id},
+        {"$set": update_data}
+    )
+    
+    return {"message": "Grading updated successfully"}
+
 @api_router.delete("/groups/{group_id}")
 async def delete_group(group_id: str):
     result = await db.groups.delete_one({"id": group_id})
