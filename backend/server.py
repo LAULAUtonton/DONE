@@ -20,6 +20,15 @@ db = client[os.environ['DB_NAME']]
 
 # Create the main app
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://journal3eso.netlify.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
