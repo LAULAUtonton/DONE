@@ -111,6 +111,7 @@ class GroupProject(BaseModel):
     day4: Day4Data = Field(default_factory=Day4Data)
     day5: Day5Data = Field(default_factory=Day5Data)
     day6: Day6Data = Field(default_factory=Day6Data)
+    grading: GradingData = Field(default_factory=GradingData)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
