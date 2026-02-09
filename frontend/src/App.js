@@ -292,11 +292,11 @@ const ProjectPage = () => {
                   
                   {/* TURN IN BOX */}
                   <div className="bg-red-100 border-4 border-red-500 p-4 mb-6">
-                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 1, YOU MUST ANSWER:</h3>
+                    <h3 className="font-bold text-lg uppercase mb-2">📥 TO COMPLETE DAY 1, YOU MUST:</h3>
                     <ul className="text-sm space-y-1">
-                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.topic && '✓'}</span> <strong>Question 1:</strong> What is your topic?</li>
-                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.why_this_topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.why_this_topic && '✓'}</span> <strong>Question 2:</strong> What is the problem and who does it affect?</li>
-                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.what_to_communicate ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.what_to_communicate && '✓'}</span> <strong>Question 3:</strong> Why is this important to you?</li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.topic && '✓'}</span> Choose your <strong>topic</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.why_this_topic ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.why_this_topic && '✓'}</span> Explain <strong>why you chose it</strong></li>
+                      <li className="flex items-center gap-2"><span className={`w-5 h-5 border-2 border-black flex items-center justify-center ${group.day1?.guiding_question_1 && group.day1?.guiding_question_2 && group.day1?.guiding_question_3 ? 'bg-green-400' : 'bg-white'}`}>{group.day1?.guiding_question_1 && group.day1?.guiding_question_2 && group.day1?.guiding_question_3 && '✓'}</span> Write <strong>3 guiding questions</strong> for your research</li>
                     </ul>
                   </div>
                   
@@ -311,16 +311,32 @@ const ProjectPage = () => {
 
                   <div className="space-y-6">
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">❓ QUESTION 1: What is your topic? <span className="text-red-500">*</span></label>
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">🌍 What is your topic? <span className="text-red-500">*</span></label>
                       <input type="text" value={group.day1?.topic || ""} onChange={(e) => updateDay(1, 'topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" placeholder="e.g., poverty, inequality, pollution..." data-testid="day1-topic" />
                     </div>
                     <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">❓ QUESTION 2: What is the problem and who does it affect? <span className="text-red-500">*</span></label>
-                      <textarea value={group.day1?.why_this_topic || ""} onChange={(e) => updateDay(1, 'why_this_topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: Poverty affects many people around the world. It is a problem in many countries..." data-testid="day1-why" />
+                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">💭 Why did you choose this topic? <span className="text-red-500">*</span></label>
+                      <textarea value={group.day1?.why_this_topic || ""} onChange={(e) => updateDay(1, 'why_this_topic', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: We chose this topic because it affects many people and we want to help..." data-testid="day1-why" />
                     </div>
-                    <div>
-                      <label className="text-sm font-bold uppercase tracking-widest block mb-2">❓ QUESTION 3: Why is this important to you? <span className="text-red-500">*</span></label>
-                      <textarea value={group.day1?.what_to_communicate || ""} onChange={(e) => updateDay(1, 'what_to_communicate', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] min-h-[100px]" placeholder="Example: This is important because we want to help people and make a difference..." data-testid="day1-important" />
+                    
+                    {/* STUDENT'S OWN GUIDING QUESTIONS */}
+                    <div className="bg-purple-100 border-4 border-purple-500 p-4">
+                      <h3 className="font-bold text-lg uppercase mb-3">🔍 YOUR 3 GUIDING QUESTIONS FOR RESEARCH</h3>
+                      <p className="text-sm mb-4 text-gray-700">Write 3 questions YOU want to answer about your topic. These will guide your research on Day 2.</p>
+                      <div className="space-y-3">
+                        <div>
+                          <label className="text-sm font-bold block mb-1">Question 1: <span className="text-red-500">*</span></label>
+                          <input type="text" value={group.day1?.guiding_question_1 || ""} onChange={(e) => updateDay(1, 'guiding_question_1', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none" placeholder="e.g., How many people are affected by poverty in the world?" data-testid="day1-q1" />
+                        </div>
+                        <div>
+                          <label className="text-sm font-bold block mb-1">Question 2: <span className="text-red-500">*</span></label>
+                          <input type="text" value={group.day1?.guiding_question_2 || ""} onChange={(e) => updateDay(1, 'guiding_question_2', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none" placeholder="e.g., What causes this problem?" data-testid="day1-q2" />
+                        </div>
+                        <div>
+                          <label className="text-sm font-bold block mb-1">Question 3: <span className="text-red-500">*</span></label>
+                          <input type="text" value={group.day1?.guiding_question_3 || ""} onChange={(e) => updateDay(1, 'guiding_question_3', e.target.value)} className="w-full border-2 border-black bg-white p-3 focus:ring-2 focus:ring-[#A3E635] outline-none" placeholder="e.g., What can young people do to help?" data-testid="day1-q3" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
