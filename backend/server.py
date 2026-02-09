@@ -31,6 +31,10 @@ class Day1Data(BaseModel):
     alternative_topics: str = ""
     why_this_topic: str = ""
     what_to_communicate: str = ""
+    # Student's own guiding questions for research
+    guiding_question_1: str = ""
+    guiding_question_2: str = ""
+    guiding_question_3: str = ""
     completed: bool = False
 
 class Day2Data(BaseModel):
