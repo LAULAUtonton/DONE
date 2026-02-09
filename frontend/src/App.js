@@ -700,10 +700,39 @@ const TeacherDashboard = () => {
   const [error, setError] = useState("");
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [grading, setGrading] = useState({});
+  const [savingGrade, setSavingGrade] = useState(false);
 
   const login = async () => { try { await axios.post(`${API}/teacher/login`, { password }); setAuthenticated(true); fetchGroups(); } catch (e) { setError("Incorrect password"); } };
   const fetchGroups = async () => { try { const res = await axios.get(`${API}/groups`); setGroups(res.data); } catch (e) { console.error(e); } };
   const deleteGroup = async (id) => { if (!window.confirm("Delete?")) return; try { await axios.delete(`${API}/groups/${id}`); setGroups(groups.filter(g => g.id !== id)); if (selectedGroup?.id === id) setSelectedGroup(null); } catch (e) {} };
+  
+  const selectGroup = (g) => {
+    setSelectedGroup(g);
+    setGrading(g.grading || { structure: 0, second_conditional: 0, indefinite_pronouns: 0, vocabulary: 0, pronunciation: 0, participation: 0, comments: "" });
+  };
+
+  const updateGrade = (field, value) => {
+    setGrading(prev => ({ ...prev, [field]: value }));
+  };
+
+  const saveGrading = async () => {
+    if (!selectedGroup) return;
+    setSavingGrade(true);
+    try {
+      await axios.put(`${API}/groups/${selectedGroup.id}/grading`, { grading });
+      const updatedGroups = groups.map(g => g.id === selectedGroup.id ? { ...g, grading } : g);
+      setGroups(updatedGroups);
+      setSelectedGroup({ ...selectedGroup, grading });
+    } catch (e) { console.error(e); }
+    setSavingGrade(false);
+  };
+
+  const calculateTotal = () => {
+    const fields = ['structure', 'second_conditional', 'indefinite_pronouns', 'vocabulary', 'pronunciation', 'participation'];
+    const sum = fields.reduce((acc, f) => acc + (grading[f] || 0), 0);
+    return { sum, max: 24, percentage: Math.round((sum / 24) * 100) };
+  };
 
   if (!authenticated) {
     return (
@@ -719,6 +748,8 @@ const TeacherDashboard = () => {
     );
   }
 
+  const total = calculateTotal();
+
   return (
     <div className="min-h-screen bg-[#F9FAFB]" data-testid="teacher-dashboard">
       <header className="bg-black text-white p-4 border-b-4 border-[#8B5CF6]">
@@ -732,15 +763,19 @@ const TeacherDashboard = () => {
           <div className="lg:col-span-1">
             <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4">
               <h2 className="font-bold uppercase text-sm mb-4">Groups ({groups.length})</h2>
-              {groups.length === 0 ? <p className="text-gray-500 text-sm">No groups</p> : (
+              {groups.length === 0 ? <p className="text-gray-500 text-sm">No groups yet</p> : (
                 <div className="space-y-2">
                   {groups.map(g => {
                     const completed = [g.day1?.completed, g.day2?.completed, g.day3?.completed, g.day4?.completed, g.day5?.completed, g.day6?.completed].filter(Boolean).length;
+                    const hasGrade = g.grading && Object.values(g.grading).some(v => v > 0);
                     return (
-                      <div key={g.id} className={`border-2 border-black p-3 cursor-pointer ${selectedGroup?.id === g.id ? 'bg-[#8B5CF6] text-white' : 'bg-white hover:bg-gray-100'}`} onClick={() => setSelectedGroup(g)} data-testid={`teacher-group-${g.id}`}>
+                      <div key={g.id} className={`border-2 border-black p-3 cursor-pointer ${selectedGroup?.id === g.id ? 'bg-[#8B5CF6] text-white' : 'bg-white hover:bg-gray-100'}`} onClick={() => selectGroup(g)} data-testid={`teacher-group-${g.id}`}>
                         <div className="flex justify-between items-start">
                           <div><h3 className="font-bold">{g.group_name}</h3><p className="text-xs opacity-75">{g.members?.join(", ")}</p></div>
-                          <div className={`px-2 py-1 text-xs font-bold border-2 ${selectedGroup?.id === g.id ? 'border-white' : 'border-black bg-[#A3E635]'}`}>{completed}/6</div>
+                          <div className="flex gap-1">
+                            <div className={`px-2 py-1 text-xs font-bold border-2 ${selectedGroup?.id === g.id ? 'border-white' : 'border-black bg-[#A3E635]'}`}>{completed}/6</div>
+                            {hasGrade && <div className={`px-2 py-1 text-xs font-bold border-2 ${selectedGroup?.id === g.id ? 'border-white bg-white text-black' : 'border-black bg-blue-200'}`}>📝</div>}
+                          </div>
                         </div>
                       </div>
                     );
@@ -751,30 +786,113 @@ const TeacherDashboard = () => {
           </div>
           <div className="lg:col-span-2">
             {selectedGroup ? (
-              <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 max-h-[80vh] overflow-y-auto">
-                <div className="flex justify-between items-start mb-6 pb-4 border-b-2 border-black">
-                  <div><h2 className="text-2xl font-bold">{selectedGroup.group_name}</h2><p className="text-gray-600">{selectedGroup.members?.join(" • ")}</p></div>
-                  <button onClick={() => deleteGroup(selectedGroup.id)} className="bg-red-500 text-white border-2 border-black p-2" data-testid="delete-group-btn"><Trash2 className="w-5 h-5" /></button>
-                </div>
-                <div className="space-y-4">
-                  {[1,2,3,4,5,6].map(day => {
-                    const d = selectedGroup[`day${day}`];
-                    const titles = ["Planning","Research","Language","Draft Script","Final Script & Production","Reflection"];
-                    return (
-                      <div key={day} className={`border-2 border-black p-4 ${d?.completed ? 'bg-green-50' : 'bg-gray-50'}`}>
-                        <div className="flex items-center gap-2 mb-2">
-                          {d?.completed ? <CheckCircle className="w-5 h-5 text-green-600" /> : <div className="w-5 h-5 border-2 border-black rounded-full" />}
-                          <h3 className="font-bold">Day {day}: {titles[day-1]}</h3>
+              <div className="space-y-6">
+                {/* Group Info & Days */}
+                <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 max-h-[50vh] overflow-y-auto">
+                  <div className="flex justify-between items-start mb-6 pb-4 border-b-2 border-black">
+                    <div><h2 className="text-2xl font-bold">{selectedGroup.group_name}</h2><p className="text-gray-600">{selectedGroup.members?.join(" • ")}</p></div>
+                    <button onClick={() => deleteGroup(selectedGroup.id)} className="bg-red-500 text-white border-2 border-black p-2" data-testid="delete-group-btn"><Trash2 className="w-5 h-5" /></button>
+                  </div>
+                  <div className="space-y-4">
+                    {[1,2,3,4,5,6].map(day => {
+                      const d = selectedGroup[`day${day}`];
+                      const titles = ["Planning","Research","Language","Draft Script","Final Script & Production","Reflection"];
+                      return (
+                        <div key={day} className={`border-2 border-black p-4 ${d?.completed ? 'bg-green-50' : 'bg-gray-50'}`}>
+                          <div className="flex items-center gap-2 mb-2">
+                            {d?.completed ? <CheckCircle className="w-5 h-5 text-green-600" /> : <div className="w-5 h-5 border-2 border-black rounded-full" />}
+                            <h3 className="font-bold">Day {day}: {titles[day-1]}</h3>
+                          </div>
+                          {day === 1 && d && <div className="text-sm space-y-1"><p><strong>Topic:</strong> {d.topic || "-"}</p><p><strong>Why:</strong> {d.why_this_topic || "-"}</p>{d.guiding_question_1 && <div className="bg-purple-50 p-2 mt-2 border border-purple-300"><p className="font-bold text-purple-700 text-xs mb-1">🔍 GUIDING QUESTIONS:</p><p className="text-xs">1. {d.guiding_question_1}</p><p className="text-xs">2. {d.guiding_question_2}</p><p className="text-xs">3. {d.guiding_question_3}</p></div>}</div>}
+                          {day === 2 && d && <div className="text-sm"><p><strong>Facts:</strong> {d.learnings || "-"}</p><p><strong>Solutions:</strong> {d.target_audience || "-"}</p></div>}
+                          {day === 3 && d && <div className="text-sm"><p><strong>Conditionals:</strong> {d.introduction || "-"}</p><p><strong>Pronouns:</strong> {d.development || "-"}</p></div>}
+                          {day === 4 && d && <div className="text-sm"><p className="font-bold text-yellow-700 mb-1">📝 DRAFT Script:</p><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.draft_script || "-"}</pre></div>}
+                          {day === 5 && d && <div className="text-sm space-y-2">{d.final_script && <div><p className="font-bold text-green-700 mb-1">✅ FINAL Corrected Script:</p><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.final_script}</pre></div>}{d.rehearsal_notes && <p><strong>Rehearsal Notes:</strong> {d.rehearsal_notes}</p>}{d.media_link && <p><strong>Link:</strong> <a href={d.media_link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">{d.media_link}</a></p>}</div>}
+                          {day === 6 && d && <div className="text-sm"><p><strong>Learned:</strong> {d.what_learned || "-"}</p><p><strong>Experience:</strong> {d.overall_experience || "-"}</p></div>}
                         </div>
-                        {day === 1 && d && <div className="text-sm"><p><strong>Topic:</strong> {d.topic || "-"}</p><p><strong>Problem:</strong> {d.why_this_topic || "-"}</p></div>}
-                        {day === 2 && d && <div className="text-sm"><p><strong>Facts:</strong> {d.learnings || "-"}</p><p><strong>Solutions:</strong> {d.target_audience || "-"}</p></div>}
-                        {day === 3 && d && <div className="text-sm"><p><strong>Conditionals:</strong> {d.introduction || "-"}</p><p><strong>Pronouns:</strong> {d.development || "-"}</p></div>}
-                        {day === 4 && d && <div className="text-sm"><p className="font-bold text-yellow-700 mb-1">📝 DRAFT Script:</p><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.draft_script || "-"}</pre></div>}
-                        {day === 5 && d && <div className="text-sm space-y-2">{d.final_script && <div><p className="font-bold text-green-700 mb-1">✅ FINAL Corrected Script:</p><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.final_script}</pre></div>}{d.rehearsal_notes && <p><strong>Rehearsal Notes:</strong> {d.rehearsal_notes}</p>}{d.media_link && <p><strong>Link:</strong> <a href={d.media_link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">{d.media_link}</a></p>}</div>}
-                        {day === 6 && d && <div className="text-sm"><p><strong>Learned:</strong> {d.what_learned || "-"}</p><p><strong>Experience:</strong> {d.overall_experience || "-"}</p></div>}
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* GRADING TABLE */}
+                <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6">
+                  <h3 className="text-xl font-bold uppercase mb-4 flex items-center gap-2">📊 Grading Rubric</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm border-collapse">
+                      <thead>
+                        <tr className="bg-black text-white">
+                          <th className="border border-black p-2 text-left">Criteria</th>
+                          <th className="border border-black p-2 w-16 text-center">1</th>
+                          <th className="border border-black p-2 w-16 text-center">2</th>
+                          <th className="border border-black p-2 w-16 text-center">3</th>
+                          <th className="border border-black p-2 w-16 text-center">4</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          { key: 'structure', label: 'Structure', desc: ['Poor', '1 part missing', 'Parts included', 'All parts'] },
+                          { key: 'second_conditional', label: 'Second Conditional', desc: ['Not used', '1-3 with errors', '4-5 correct', '6 correct'] },
+                          { key: 'indefinite_pronouns', label: 'Indefinite Pronouns', desc: ['Not used', '1 used', '2-3 used', '4+ used'] },
+                          { key: 'vocabulary', label: 'Vocabulary (Unit 3)', desc: ['Very limited', 'Limited', 'Mostly correct', 'Varied & accurate'] },
+                          { key: 'pronunciation', label: 'Pronunciation', desc: ['Hard to understand', 'Some difficulty', 'Mostly clear', 'Confident'] },
+                          { key: 'participation', label: 'Participation', desc: ['1 dominates', 'Unequal', 'Most speak', 'All equal'] },
+                        ].map(row => (
+                          <tr key={row.key} className={grading[row.key] > 0 ? 'bg-green-50' : ''}>
+                            <td className="border border-black p-2 font-medium">{row.label}</td>
+                            {[1,2,3,4].map(score => (
+                              <td key={score} className="border border-black p-1 text-center">
+                                <button 
+                                  onClick={() => updateGrade(row.key, score)} 
+                                  className={`w-10 h-10 border-2 border-black font-bold transition-all ${grading[row.key] === score ? 'bg-[#A3E635] scale-110' : 'bg-white hover:bg-gray-100'}`}
+                                  title={row.desc[score-1]}
+                                  data-testid={`grade-${row.key}-${score}`}
+                                >
+                                  {score}
+                                </button>
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Total & Comments */}
+                  <div className="mt-4 grid md:grid-cols-2 gap-4">
+                    <div className="bg-[#A3E635] border-2 border-black p-4">
+                      <div className="text-center">
+                        <p className="text-sm font-bold uppercase">Total Score</p>
+                        <p className="text-4xl font-bold">{total.sum} / {total.max}</p>
+                        <p className="text-lg font-bold">{total.percentage}%</p>
+                        <p className="text-sm mt-2">
+                          {total.percentage >= 90 ? '⭐ Excellent!' : 
+                           total.percentage >= 70 ? '👍 Good work!' : 
+                           total.percentage >= 50 ? '📚 Needs improvement' : 
+                           total.sum > 0 ? '⚠️ Needs more work' : 'Not graded yet'}
+                        </p>
                       </div>
-                    );
-                  })}
+                    </div>
+                    <div>
+                      <label className="text-sm font-bold uppercase block mb-2">Teacher Comments:</label>
+                      <textarea 
+                        value={grading.comments || ""} 
+                        onChange={(e) => updateGrade('comments', e.target.value)} 
+                        className="w-full border-2 border-black p-2 min-h-[100px]" 
+                        placeholder="Add feedback for the group..."
+                        data-testid="grade-comments"
+                      />
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={saveGrading} 
+                    disabled={savingGrade}
+                    className="mt-4 w-full bg-black text-white border-2 border-black hover:bg-[#8B5CF6] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-bold uppercase py-3 disabled:opacity-50"
+                    data-testid="save-grading-btn"
+                  >
+                    {savingGrade ? "Saving..." : "💾 Save Grading"}
+                  </button>
                 </div>
               </div>
             ) : (
