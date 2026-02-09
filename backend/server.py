@@ -1,25 +1,12 @@
-from fastapi import FastAPI, APIRouter, HTTPException
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
-import os
-import logging
-from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List
 import uuid
-from datetime import datetime, timezone
 
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
-
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app
 app = FastAPI()
+
+# CORS: permitir frontend de Netlify
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -30,236 +17,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Create a router with the /api prefix
-api_router = APIRouter(prefix="/api")
+@app.get("/")
+def root():
+    return {"status": "Backend running"}
 
-# ============ MODELS ============
-
-class Day1Data(BaseModel):
-    topic: str = ""
-    alternative_topics: str = ""
-    why_this_topic: str = ""
-    what_to_communicate: str = ""
-    # Student's own guiding questions for research
-    guiding_question_1: str = ""
-    guiding_question_2: str = ""
-    guiding_question_3: str = ""
-    completed: bool = False
-
-class Day2Data(BaseModel):
-    sources: str = ""
-    learnings: str = ""
-    target_audience: str = ""
-    completed: bool = False
-
-class Day3Data(BaseModel):
-    # Message Structure
-    introduction: str = ""
-    development: str = ""
-    conclusion: str = ""
-    # Grammar Checklist (Unit 3 - Actual content)
-    grammar_second_conditional: bool = False
-    grammar_indefinite_pronouns: bool = False
-    grammar_compound_nouns: bool = False
-    # Vocabulary
-    key_vocabulary: str = ""
-    vocabulary_used_in_script: str = ""
-    # Language Style
-    language_style: str = ""
-    completed: bool = False
-
-class Day4Data(BaseModel):
-    # Script
-    draft_script: str = ""
-    # Visual Description
-    visual_sketch: str = ""
-    # Timing
-    estimated_duration: str = ""
-    completed: bool = False
-
-class Day5Data(BaseModel):
-    # Final corrected script
-    final_script: str = ""
-    # Production
-    rehearsal_notes: str = ""
-    production_tools: str = ""
-    recording_date: str = ""
-    # Final submission
-    media_link: str = ""
-    completed: bool = False
-
-class Day6Data(BaseModel):
-    # Reflection
-    what_learned: str = ""
-    challenges_faced: str = ""
-    team_collaboration: str = ""
-    what_would_change: str = ""
-    overall_experience: str = ""
-    completed: bool = False
-
-# Grading rubric model
-class GradingData(BaseModel):
-    structure: int = 0  # 1-4
-    second_conditional: int = 0  # 1-4
-    indefinite_pronouns: int = 0  # 1-4
-    vocabulary: int = 0  # 1-4
-    pronunciation: int = 0  # 1-4
-    participation: int = 0  # 1-4
-    comments: str = ""
-
-class GroupProject(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    group_name: str
-    members: List[str] = []
-    project_type: str = "podcast"  # "podcast" or "vlog"
-    day1: Day1Data = Field(default_factory=Day1Data)
-    day2: Day2Data = Field(default_factory=Day2Data)
-    day3: Day3Data = Field(default_factory=Day3Data)
-    day4: Day4Data = Field(default_factory=Day4Data)
-    day5: Day5Data = Field(default_factory=Day5Data)
-    day6: Day6Data = Field(default_factory=Day6Data)
-    grading: GradingData = Field(default_factory=GradingData)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+@app.get("/api/groups")
+def get_groups():
+    return []
 
 class GroupCreate(BaseModel):
     group_name: str
     members: List[str]
-    project_type: str = "podcast"
+    project_type: str
 
-class DayUpdateRequest(BaseModel):
-    day: int
-    data: dict
-
-# ============ ROUTES ============
-
-@api_router.get("/")
-async def root():
-    return {"message": "Podcast Journal API"}
-
-# Groups
-@api_router.post("/groups", response_model=GroupProject)
-async def create_group(input: GroupCreate):
-    # Check if group name already exists
-    existing = await db.groups.find_one({"group_name": input.group_name}, {"_id": 0})
-    if existing:
-        raise HTTPException(status_code=400, detail="Group name already exists")
-    
-    project = GroupProject(
-        group_name=input.group_name,
-        members=input.members,
-        project_type=input.project_type
-    )
-    
-    doc = project.model_dump()
-    doc['created_at'] = doc['created_at'].isoformat()
-    doc['updated_at'] = doc['updated_at'].isoformat()
-    
-    await db.groups.insert_one(doc)
-    return project
-
-@api_router.get("/groups", response_model=List[GroupProject])
-async def get_all_groups():
-    groups = await db.groups.find({}, {"_id": 0}).to_list(100)
-    for g in groups:
-        if isinstance(g.get('created_at'), str):
-            g['created_at'] = datetime.fromisoformat(g['created_at'])
-        if isinstance(g.get('updated_at'), str):
-            g['updated_at'] = datetime.fromisoformat(g['updated_at'])
-    return groups
-
-@api_router.get("/groups/{group_id}", response_model=GroupProject)
-async def get_group(group_id: str):
-    group = await db.groups.find_one({"id": group_id}, {"_id": 0})
-    if not group:
-        raise HTTPException(status_code=404, detail="Group not found")
-    
-    if isinstance(group.get('created_at'), str):
-        group['created_at'] = datetime.fromisoformat(group['created_at'])
-    if isinstance(group.get('updated_at'), str):
-        group['updated_at'] = datetime.fromisoformat(group['updated_at'])
-    
-    return group
-
-@api_router.put("/groups/{group_id}/day")
-async def update_day(group_id: str, request: DayUpdateRequest):
-    group = await db.groups.find_one({"id": group_id}, {"_id": 0})
-    if not group:
-        raise HTTPException(status_code=404, detail="Group not found")
-    
-    day_key = f"day{request.day}"
-    if day_key not in ["day1", "day2", "day3", "day4", "day5", "day6"]:
-        raise HTTPException(status_code=400, detail="Invalid day")
-    
-    update_data = {
-        f"{day_key}": request.data,
-        "updated_at": datetime.now(timezone.utc).isoformat()
+@app.post("/api/groups")
+def create_group(group: GroupCreate):
+    return {
+        "id": str(uuid.uuid4()),
+        "group_name": group.group_name,
+        "members": group.members,
+        "project_type": group.project_type,
     }
-    
-    await db.groups.update_one(
-        {"id": group_id},
-        {"$set": update_data}
-    )
-    
-    return {"message": "Updated successfully", "day": request.day}
-
-class GradingUpdateRequest(BaseModel):
-    grading: dict
-
-@api_router.put("/groups/{group_id}/grading")
-async def update_grading(group_id: str, request: GradingUpdateRequest):
-    group = await db.groups.find_one({"id": group_id}, {"_id": 0})
-    if not group:
-        raise HTTPException(status_code=404, detail="Group not found")
-    
-    update_data = {
-        "grading": request.grading,
-        "updated_at": datetime.now(timezone.utc).isoformat()
-    }
-    
-    await db.groups.update_one(
-        {"id": group_id},
-        {"$set": update_data}
-    )
-    
-    return {"message": "Grading updated successfully"}
-
-@api_router.delete("/groups/{group_id}")
-async def delete_group(group_id: str):
-    result = await db.groups.delete_one({"id": group_id})
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Group not found")
-    return {"message": "Group deleted"}
-
-# Teacher password check (simple)
-TEACHER_PASSWORD = os.environ.get('TEACHER_PASSWORD', 'profesor2024')
-
-@api_router.post("/teacher/login")
-async def teacher_login(data: dict):
-    if data.get("password") == TEACHER_PASSWORD:
-        return {"success": True}
-    raise HTTPException(status_code=401, detail="Incorrect password")
-
-# Include the router
-app.include_router(api_router)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
