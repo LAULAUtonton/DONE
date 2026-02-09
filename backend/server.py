@@ -88,6 +88,16 @@ class Day6Data(BaseModel):
     overall_experience: str = ""
     completed: bool = False
 
+# Grading rubric model
+class GradingData(BaseModel):
+    structure: int = 0  # 1-4
+    second_conditional: int = 0  # 1-4
+    indefinite_pronouns: int = 0  # 1-4
+    vocabulary: int = 0  # 1-4
+    pronunciation: int = 0  # 1-4
+    participation: int = 0  # 1-4
+    comments: str = ""
+
 class GroupProject(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
