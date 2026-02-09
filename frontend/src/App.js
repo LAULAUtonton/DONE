@@ -743,7 +743,7 @@ const TeacherDashboard = () => {
                 <div className="space-y-4">
                   {[1,2,3,4,5,6].map(day => {
                     const d = selectedGroup[`day${day}`];
-                    const titles = ["Planning","Research","Language","Script","Production","Reflection"];
+                    const titles = ["Planning","Research","Language","Draft Script","Final Script & Production","Reflection"];
                     return (
                       <div key={day} className={`border-2 border-black p-4 ${d?.completed ? 'bg-green-50' : 'bg-gray-50'}`}>
                         <div className="flex items-center gap-2 mb-2">
