@@ -6,7 +6,6 @@ import uuid
 
 app = FastAPI()
 
-# CORS: permitir frontend de Netlify
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -38,3 +37,4 @@ def create_group(group: GroupCreate):
         "members": group.members,
         "project_type": group.project_type,
     }
+
