@@ -753,8 +753,8 @@ const TeacherDashboard = () => {
                         {day === 1 && d && <div className="text-sm"><p><strong>Topic:</strong> {d.topic || "-"}</p><p><strong>Problem:</strong> {d.why_this_topic || "-"}</p></div>}
                         {day === 2 && d && <div className="text-sm"><p><strong>Facts:</strong> {d.learnings || "-"}</p><p><strong>Solutions:</strong> {d.target_audience || "-"}</p></div>}
                         {day === 3 && d && <div className="text-sm"><p><strong>Conditionals:</strong> {d.introduction || "-"}</p><p><strong>Pronouns:</strong> {d.development || "-"}</p></div>}
-                        {day === 4 && d && <div className="text-sm"><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.draft_script || "-"}</pre></div>}
-                        {day === 5 && d && <div className="text-sm">{d.media_link && <p><strong>Link:</strong> <a href={d.media_link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">{d.media_link}</a></p>}</div>}
+                        {day === 4 && d && <div className="text-sm"><p className="font-bold text-yellow-700 mb-1">📝 DRAFT Script:</p><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.draft_script || "-"}</pre></div>}
+                        {day === 5 && d && <div className="text-sm space-y-2">{d.final_script && <div><p className="font-bold text-green-700 mb-1">✅ FINAL Corrected Script:</p><pre className="bg-white border p-2 whitespace-pre-wrap text-xs max-h-40 overflow-y-auto">{d.final_script}</pre></div>}{d.rehearsal_notes && <p><strong>Rehearsal Notes:</strong> {d.rehearsal_notes}</p>}{d.media_link && <p><strong>Link:</strong> <a href={d.media_link} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">{d.media_link}</a></p>}</div>}
                         {day === 6 && d && <div className="text-sm"><p><strong>Learned:</strong> {d.what_learned || "-"}</p><p><strong>Experience:</strong> {d.overall_experience || "-"}</p></div>}
                       </div>
                     );
