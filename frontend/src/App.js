@@ -235,7 +235,7 @@ const fetchGroup = useCallback(async () => {
   } catch (e) {
     navigate('/');
   }
-}, [API, groupId, navigate]);
+}, [groupId, navigate]);
   
 useEffect(() => {
   fetchGroup();
