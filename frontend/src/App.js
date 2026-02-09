@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -76,21 +76,42 @@ const Landing = () => {
   const [newGroup, setNewGroup] = useState({ name: "", members: ["", "", ""], projectType: "podcast" });
   const [error, setError] = useState("");
 
-  useEffect(() => { fetchGroups(); }, []);
+  const fetchGroups = useCallback(async () => {
+  try {
+    const res = await axios.get(`${API}/groups`);
+    setGroups(res.data);
+  } catch (e) {
+    console.error(e);
+  }
+}, []);
 
-  const fetchGroups = async () => {
-    try { const res = await axios.get(`${API}/groups`); setGroups(res.data); } catch (e) { console.error(e); }
-  };
+useEffect(() => {
+  fetchGroups();
+}, [fetchGroups]);
 
-  const createGroup = async () => {
-    if (!newGroup.name.trim()) { setError("Please enter a group name"); return; }
-    const validMembers = newGroup.members.filter(m => m.trim());
-    if (validMembers.length < 1) { setError("Add at least one member"); return; }
-    try {
-      const res = await axios.post(`${API}/groups`, { group_name: newGroup.name, members: validMembers, project_type: newGroup.projectType });
-      navigate(`/project/${res.data.id}`);
-    } catch (e) { setError(e.response?.data?.detail || "Error creating group"); }
-  };
+const createGroup = async () => {
+  if (!newGroup.name.trim()) { 
+    setError("Please enter a group name"); 
+    return; 
+  }
+  const validMembers = newGroup.members.filter(m => m.trim());
+  if (validMembers.length < 1) { 
+    setError("Add at least one member"); 
+    return; 
+  }
+
+  try {
+    const res = await axios.post(`${API}/groups`, {
+      group_name: newGroup.name,
+      members: validMembers,
+      project_type: newGroup.projectType
+    });
+    navigate(`/project/${res.data.id}`);
+  } catch (e) {
+    setError(e.response?.data?.detail || "Error creating group");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] p-4 md:p-8" data-testid="landing-page">
