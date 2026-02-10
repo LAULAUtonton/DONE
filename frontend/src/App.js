@@ -995,13 +995,11 @@ const TeacherDashboard = () => {
 function App() {
   return (
     <div className="App" style={{fontFamily: 'Manrope, sans-serif'}}>
-      <BrowserRouter>
-        <Routes>
+  <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/project/:id" element={<ProjectPage />} />
           <Route path="/teacher" element={<TeacherDashboard />} />
         </Routes>
-      </BrowserRouter>
     </div>
   );
 }
